@@ -1,0 +1,22 @@
+FROM debian:stable
+
+ENV LANG en_US.UTF-8
+ENV CONFIGURE_OPTS --disable-install-rdoc
+ENV JRUBY_OPTS --2.0
+ENV DEBIAN_FRONTEND=noninteractive
+
+# --no-install-recommends to avoid installing fuse (unsupported in docker < 1.0)
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN apt-get install --no-install-recommends -y <%= 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN git clone https://github.com/sstephenson/ruby-build.git && cd ruby-build && ./install.sh
+RUN ruby-build jruby-1.7.13 /usr/local && rm -rf ruby-build
+RUN gem install bundler
+
+WORKDIR /rails_app
+
+ADD ./ /rails_app
+
+ENTRYPOINT /rails_app/start.sh
