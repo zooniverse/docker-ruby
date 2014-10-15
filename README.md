@@ -3,19 +3,34 @@ docker-ruby
 
 Minimal Docker Containers for different rubies
 
+## Docker Hub
+
+Docker Containers are automatically build from [zooniverse/ruby](https://hub.docker.com/u/zooniverse/ruby)
+
 ## Usage
 
-Run `rake config` to setup a Docker username to create the image
-under, select additional default dependencies (comma or space
-seperated), and set a default ruby to build.
+We use [ruby-build](https://github.com/sstephenson/ruby-build) and
+should be able to compile any supported rubies from that probject. 
 
-`rake build` compiles the Dockerfile.erb into a Dockerfile for the
-default ruby version specified and runs docker build against it.
+`rake create` compiles the Dockerfile.erb into a Dockerfile after
+prompting for the ruby version and any additional dependencies and
+moves it into a subfolder with the provided ruby version.
 
-`rake build ruby=other_ruby_version` builds your box with a different
-version of ruby specified.
+`rake create ruby=version deps=list of deps` skips the configuration
+prompts and uses the supplied values. 
 
-`rake deploy` uploads the containers to Docker Hub.
+`rake build hub_name=username` creates a new ruby as `rake create` and
+runs docker build on it prefixing the resulting image with the suppied
+`hub_name`. Also accepts the same options as `rake create`.
+
+`rake deploy hub_name=username` uploads any locally built containers
+to Docker Hub.
+
+## Autobuilds
+
++ **MRI 2.1.2** - with mysql and postgres client libraries installed.
+
++ **JRuby 1.7.16** - running on OpenJDK 7.
 
 ## License
 
