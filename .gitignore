@@ -33,4 +33,4 @@ build/
 .rvmrc
 
 .config
-Dockerfile
+./Dockerfile

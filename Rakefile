@@ -5,64 +5,49 @@ task default: :build
 
 default_deps = %W(git-core
                   curl
-                  ca-certificates
-                  autoconf
-                  bison
-                  build-essential
-                  libssl-dev
-                  libyaml-dev
-                  libreadline6-dev
-                  zlib1g-dev
-                  libncurses5-dev)
+                  build-essential)
 
-def conf
-  @conf ||= JSON.parse(File.read('./.config'))
-end
+mri_deps = %W(autoconf
+              bison
+              libssl-dev
+              libyaml-dev
+              libreadline6-dev
+              zlib1g-dev
+              libncurses5-dev)
 
-def ruby_version
-  @ruby_version ||= (ENV['ruby'] || conf['default_ruby'])
-end
+jruby_deps = %W(openjdk-7-jre)
+
+ruby_version = nil
+add_deps = nil
 
 task :config do
-  if File.exist?('.config')
-    puts 'This will overwrite your existing .config file'
+  ruby_version = ENV['ruby']
+  add_deps = ENV['deps']
+  
+  unless ruby_version
+    print 'Enter ruby version: '
+    ruby_version = STDIN.gets.chomp
   end
-  
-  print 'Enter your docker hub username: [zooniverse] '
-  name = STDIN.gets.chomp
-  
-  print 'Enter your default ruby version: [2.1.2] '
-  version = STDIN.gets.chomp
 
-  print 'Enter additional dependencies: []'
-  deps = STDIN.gets.chomp
-  
-  name = 'zooniverse' if name.empty?
-  version = '2.1.2' if version.empty?
-  deps = deps.split(/,?\s+/)
-  
-  config_path = File.expand_path('./.config')
-  File.open(config_path, 'w') do |file|
-    file.write({username: name,
-                default_ruby: version,
-                dependencies:  deps}.to_json)
+  unless add_dpes
+    print 'Enter additional dependencies: '
+    add_deps = STDIN.gets.chomp
   end
-  puts '.config file saved'
+  
+  add_deps = add_deps.split(/,?\s+/)
 end
 
-task :build => [:compile_docker] do
-  sh "sudo docker build -t #{ conf['username'] }/ruby:#{ ruby_version } ."
-  sh "rm Dockerfile"
+task :create => [:config, :compile_docker] do
+  sh "mkdir -p #{ ruby_version }"
+  sh "mv Dockerfile #{ ruby_version }"
 end
 
 task :compile_docker do
-  unless ruby_version
-    raise StandardError.new("Please specify a ruby version") 
-  end
-
-  deps = default_deps | conf['dependencies']
+  deps = default_deps | add_deps
   if ruby_version.match(/jruby/) && deps.select{ |dep| dep.match(/jdk/) }.empty?
-    deps.push('openjdk-7-jre')
+    deps.concat(jruby_deps)
+  else 
+    deps.concat(mri_deps)
   end
 
   build_opts = OpenStruct.new(ruby: ruby_version,
@@ -76,6 +61,10 @@ task :compile_docker do
   end
 end
 
+task :build => [:create] do
+  sh "cd #{ ruby_version }/ && sudo docker build -t #{ ENV['hub_name'] }/ruby:#{ ruby_version } ."
+end
+
 task :deploy do
-  sh "sudo docker push #{ conf['username'] }/ruby"
+  sh "sudo docker push #{ ENV['hub_name'] }/ruby"
 end
