@@ -1,7 +1,7 @@
 require 'erb'
 require 'json'
 
-task default: :build
+task default: :create
 
 default_deps = %W(git-core
                   curl
