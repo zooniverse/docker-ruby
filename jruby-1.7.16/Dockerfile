@@ -12,7 +12,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/sstephenson/ruby-build.git && cd ruby-build && ./install.sh
 RUN ruby-build jruby-1.7.16 /usr/local && rm -rf ruby-build
-RUN gem install bundler jbundler
+RUN gem install bundler 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /rails_app
