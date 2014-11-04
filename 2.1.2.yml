@@ -1,0 +1,7 @@
+ruby: 2.1.2
+deps:
+  - libmysqlclient-dev
+  - libpq-dev
+base_image: ubuntu:14.04
+config_opts:
+  - enable-shared

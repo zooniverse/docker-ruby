@@ -14,11 +14,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir ruby-build && \
-    wget -qO- https://github.com/sstephenson/ruby-build/archive/v20141028.tar.gz | \ 
+    wget -qO- https://github.com/sstephenson/ruby-build/archive/master.tar.gz | \ 
     tar xz -C ruby-build/ --strip-components 1 && \
     cd ruby-build && \
-    ./install.sh && \
-    ruby-build jruby-1.7.16 /usr/local && rm -rf ruby-build
+    ./bin/ruby-build jruby-1.7.16.1 /usr/local && rm -rf ruby-build
     
 RUN gem install bundler jbundler:0.5.5
 

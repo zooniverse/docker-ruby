@@ -1,0 +1,5 @@
+ruby: jruby-1.7.16.1
+base_image: debian
+gems:
+  - jbundler:0.5.5
+ruby_build_release: master
