@@ -5,7 +5,8 @@ task default: :create
 
 default_deps = %W(git-core
                   curl
-                  build-essential)
+                  build-essential
+                  ca-certificates)
 
 mri_deps = %W(autoconf
               bison
@@ -26,7 +27,7 @@ task :config do
   ruby_version = ENV['ruby']
   add_deps = ENV['deps']
   add_gems = ENV['gems']
-  
+
   unless ruby_version
     print 'Enter ruby version: '
     ruby_version = STDIN.gets.chomp
@@ -36,12 +37,12 @@ task :config do
     print 'Enter additional dependencies: '
     add_deps = STDIN.gets.chomp
   end
- 
+
   unless add_gems
     print 'Enter additional gems: '
     add_gems= STDIN.gets.chomp
   end
-  
+
   add_deps = add_deps.split(/,?\s+/)
   add_gems = add_gems.split(/,?\s+/)
 end
@@ -55,14 +56,14 @@ task :compile_docker do
   deps = default_deps | add_deps
   if ruby_version.match(/jruby/) && deps.select{ |dep| dep.match(/jdk/) }.empty?
     deps.concat(jruby_deps)
-  else 
+  else
     deps.concat(mri_deps)
   end
 
   build_opts = OpenStruct.new(ruby: ruby_version,
                               dependencies: deps.join(' '),
                               gems: add_gems.join(' '))
-  
+
   dockerfile = ERB.new(File.read("./Dockerfile.erb"))
     .result(build_opts.instance_eval { binding })
 
