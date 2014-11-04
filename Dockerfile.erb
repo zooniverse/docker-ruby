@@ -1,18 +1,24 @@
-FROM ubuntu:14.04
+FROM <%= image %>
 
 ENV LANG en_US.UTF-8
-ENV CONFIGURE_OPTS --disable-install-rdoc --enable-shared
+ENV CONFIGURE_OPTS --disable-install-rdoc <%= opts %>
 ENV JRUBY_OPTS --2.0
 ENV DEBIAN_FRONTEND noninteractive
 
 # --no-install-recommends to avoid installing fuse (unsupported in docker < 1.0)
 RUN apt-get update && \
     apt-get -y upgrade && \
-    apt-get install --no-install-recommends -y <%= dependencies %>
+    apt-get install --no-install-recommends -y <%= dependencies %> && \
+    apt-get autoremove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN git clone https://github.com/sstephenson/ruby-build.git && cd ruby-build && ./install.sh
-RUN ruby-build <%= ruby %> /usr/local && rm -rf ruby-build
+RUN mkdir ruby-build && \
+    wget -qO- https://github.com/sstephenson/ruby-build/archive/<%= ruby_build %>.tar.gz | \ 
+    tar xz -C ruby-build/ --strip-components 1 && \
+    cd ruby-build && \
+    ./bin/ruby-build <%= ruby %> /usr/local && rm -rf ruby-build
+    
 RUN gem install bundler <%= gems %>
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /rails_app
