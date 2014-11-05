@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 ENV LANG en_US.UTF-8
-ENV CONFIGURE_OPTS --disable-install-rdoc 
+ENV CONFIGURE_OPTS --disable-install-rdoc --enable-shared
 ENV JRUBY_OPTS --2.0
 ENV DEBIAN_FRONTEND noninteractive
 
