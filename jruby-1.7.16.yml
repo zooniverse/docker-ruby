@@ -1,4 +1,4 @@
 ruby: jruby-1.7.16
-base_image: debian
+base_image: zooniverse/java
 gems:
   - jbundler:0.5.5

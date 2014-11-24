@@ -1,7 +1,7 @@
-FROM debian
+FROM zooniverse/java
 
 ENV LANG en_US.UTF-8
-ENV CONFIGURE_OPTS --disable-install-rdoc 
+ENV CONFIGURE_OPTS --disable-install-rdoc
 ENV JRUBY_OPTS --2.0
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -14,11 +14,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir ruby-build && \
-    wget -qO- https://github.com/sstephenson/ruby-build/archive/master.tar.gz | \ 
+    wget -qO- https://github.com/sstephenson/ruby-build/archive/master.tar.gz | \
     tar xz -C ruby-build/ --strip-components 1 && \
     cd ruby-build && \
     ./bin/ruby-build jruby-1.7.16.1 /usr/local && rm -rf ruby-build
-    
+
 RUN gem install bundler jbundler:0.5.5
 
 WORKDIR /rails_app
