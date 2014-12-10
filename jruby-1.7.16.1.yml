@@ -1,5 +1,5 @@
 ruby: jruby-1.7.16.1
 base_image: zooniverse/java
 gems:
-  - jbundler:0.5.5
+  - jbundler
 ruby_build_release: master
