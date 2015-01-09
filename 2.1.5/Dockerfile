@@ -17,7 +17,7 @@ RUN mkdir ruby-build && \
     wget -qO- https://github.com/sstephenson/ruby-build/archive/v20141225.tar.gz | \ 
     tar xz -C ruby-build/ --strip-components 1 && \
     cd ruby-build && \
-    ./bin/ruby-build 2.1.2 /usr/local && rm -rf ruby-build
+    ./bin/ruby-build 2.1.5 /usr/local && rm -rf ruby-build
     
 RUN gem install bundler 
 
