@@ -13,7 +13,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir ruby-build && \
-    wget -qO- https://github.com/sstephenson/ruby-build/archive/v20150116.zip | \ 
+    wget -qO- https://github.com/sstephenson/ruby-build/archive/v20150116.tar.gz | \
     tar xz -C ruby-build/ --strip-components 1 && \
     cd ruby-build && \
     ./bin/ruby-build 2.2.0 /usr/local && rm -rf ruby-build
