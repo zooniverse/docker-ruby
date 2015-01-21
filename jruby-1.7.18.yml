@@ -1,0 +1,5 @@
+ruby: jruby-1.7.18
+base_image: zooniverse/java
+gems:
+  - jbundler
+ruby_build_release: master
