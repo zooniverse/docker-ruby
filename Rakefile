@@ -3,7 +3,7 @@ require 'yaml'
 
 task default: :create
 
-default_ruby_build_release = 'v20141225'
+default_ruby_build_release = 'v20150303'
 default_base_image = 'ubuntu:14.04'
 
 default_deps = %W(wget
@@ -44,7 +44,7 @@ task :config do
   add_gems = ENV['gems']
   base_image = ENV['base_image']
   config_opts = ENV['build_opts']
-  ruby_build_release = ENV['ruby_build'] 
+  ruby_build_release = ENV['ruby_build']
 
   unless ruby_version
     print 'Enter ruby version: '
@@ -63,13 +63,13 @@ task :config do
 
   unless base_image
     print "Enter base docker image [#{ default_base_image }]: "
-    base_image = STDIN.gets.chomp 
+    base_image = STDIN.gets.chomp
     base_image = default_base_image if base_image.empty?
   end
 
   unless ruby_build_release
     print "Enter ruby build release [#{ default_ruby_build_release }]: "
-    ruby_build_release = STDIN.gets.chomp 
+    ruby_build_release = STDIN.gets.chomp
     ruby_build_release = default_ruby_build_release if ruby_build_release.empty?
   end
 
