@@ -3,7 +3,7 @@ require 'yaml'
 
 task default: :create
 
-default_ruby_build_release = 'v20150303'
+default_ruby_build_release = 'v20160111'
 default_base_image = 'ubuntu:14.04'
 
 default_deps = %W(wget

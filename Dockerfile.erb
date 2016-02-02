@@ -14,11 +14,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir ruby-build && \
-    wget -qO- https://github.com/sstephenson/ruby-build/archive/<%= ruby_build %>.tar.gz | \ 
+    wget -qO- https://github.com/rbenv/ruby-build/archive/<%= ruby_build %>.tar.gz | \
     tar xz -C ruby-build/ --strip-components 1 && \
     cd ruby-build && \
     ./bin/ruby-build <%= ruby %> /usr/local && rm -rf ruby-build
-    
+
 RUN gem install bundler <%= gems %>
 
 WORKDIR /rails_app
