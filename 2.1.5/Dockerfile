@@ -7,7 +7,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # --no-install-recommends to avoid installing fuse (unsupported in docker < 1.0)
 RUN apt-get update && \
-    apt-get -y upgrade && \
     apt-get install --no-install-recommends -y wget build-essential ca-certificates libmysqlclient-dev libpq-dev autoconf bison libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev && \
     apt-get autoremove && \
     apt-get clean && \

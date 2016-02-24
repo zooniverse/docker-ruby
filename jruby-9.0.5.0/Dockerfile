@@ -7,7 +7,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # --no-install-recommends to avoid installing fuse (unsupported in docker < 1.0)
 RUN apt-get update && \
-    apt-get -y upgrade && \
     apt-get install --no-install-recommends -y wget build-essential ca-certificates openjdk-7-jre-headless && \
     apt-get autoremove && \
     apt-get clean && \
