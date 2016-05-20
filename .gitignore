@@ -34,3 +34,4 @@ build/
 
 .config
 ./Dockerfile
+.DS_Store
