@@ -1,0 +1,8 @@
+ruby: 2.4.1
+deps:
+  - libmysqlclient-dev
+  - libpq-dev
+  - libsqlite3-dev
+base_image: ubuntu:14.04
+build_opts:
+  - enable-shared
